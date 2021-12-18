@@ -58,27 +58,27 @@ CREATE TABLE thingData ( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, topic varch
 )
 ### Creando la nueva tabla 'ruleEngine' en la base de datos
 ```
-CREATE TABLE  `TimeSeries`.`ruleEngine` ( `id` int(11) NOT NULL AUTO_INCREMENT, `ruleName` varchar(255) NOT NULL, `active` binary(1) NOT NULL DEFAULT '\0', `topicPattern` varchar(1024) NOT NULL, `payloadPattern` varchar(2048) NOT NULL, `method` varchar(7) NOT NULL DEFAULT 'GET', `webHook` varchar(1024) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1
+CREATE TABLE  `TimeSeries`.`ruleEngine` ( 
+  `id` int(11) NOT NULL AUTO_INCREMENT, 
+  `ruleName` varchar(255) NOT NULL, 
+  `active` binary(1) NOT NULL DEFAULT '\0', 
+  `topicPattern` varchar(1024) NOT NULL, 
+  `payloadPattern` varchar(2048) NOT NULL, 
+  `method` varchar(7) NOT NULL DEFAULT 'GET', 
+  `webHook` varchar(1024) NOT NULL, 
+  PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
+![Captura realizada el 2021-12-17 18 40 25](https://user-images.githubusercontent.com/20243155/146620671-dac2a00b-6610-472c-946c-3619cb351ff2.png)
 
+### Insertamos 3 reglas a la tabla 'ruleEngine'
 ```
 INSERT INTO `ruleEngine` (`id`, `ruleName`, `active`, `topicPattern`, `payloadPattern`, `method`, `webHook`) VALUES
 (1, 'timestamp rule', 0x31, 'timestamp%', '%', 'POST', 'localhost:1880/pub/modifiedTime/rule-engine-working'),
 (2, 'timestamp rule 2', 0x31, 'timestamp%', '%', 'POST', 'localhost:1880/pub/modifiedTime/rule-engine-working-again'),
 (3, 'again rule', 0x31, '%', '%again', 'POST', 'localhost:1880/pub/modifiedTime/again found');
 ```
+![Captura realizada el 2021-12-17 18 52 17](https://user-images.githubusercontent.com/20243155/146620690-8def1095-fdb8-41f1-955e-113fcf7013cd.png)
 
-# GET
-![Captura realizada el 2021-12-12 22 31 58](https://user-images.githubusercontent.com/20243155/145752632-8b22ad51-1a2f-4ccb-87ff-74569bd90c04.png)
-![Captura realizada el 2021-12-12 23 52 51](https://user-images.githubusercontent.com/20243155/145754516-c8af3054-67d9-4794-91c8-69c907cd8238.png)
+# Rule Engine
+![Captura realizada el 2021-12-17 18 58 26](https://user-images.githubusercontent.com/20243155/146620787-6c64d3d1-a13f-4e6e-b079-39439bb05498.png)
 
-# GET FILTERS
-![Captura realizada el 2021-12-12 22 44 57](https://user-images.githubusercontent.com/20243155/145752615-dec2ac7f-e87f-4593-8009-3895e8c8fb4e.png)
-![Captura realizada el 2021-12-12 22 44 28](https://user-images.githubusercontent.com/20243155/145752627-522bf02e-af33-4fe2-b0f5-2c5d98d35f03.png)
-
-# DELETE
-![Captura realizada el 2021-12-12 23 02 48](https://user-images.githubusercontent.com/20243155/145752578-84868faf-6608-46db-8e3e-85f9dbd62970.png)
-![Captura realizada el 2021-12-12 23 02 27](https://user-images.githubusercontent.com/20243155/145752605-3f9d4e27-57cd-473b-9ff0-1fe820a2046b.png)
-
-# PURGE
-![Captura realizada el 2021-12-12 23 17 09](https://user-images.githubusercontent.com/20243155/145752562-b6b17683-0693-4149-8eb9-0097a343526c.png)
