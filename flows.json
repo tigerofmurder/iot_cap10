@@ -1,0 +1,671 @@
+[
+    {
+        "id": "3dad57d09a64cb6c",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8caa9ba87903665b",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "search rules",
+        "func": "// Search rules\nmsg.topic = \"SELECT * FROM ruleEngine\" +\n    \" WHERE\" +\n    \" ('\" + msg.topic + \"' LIKE topicPattern)\" +\n    \" AND\" +\n    \" ('\" + msg.payload + \"' LIKE payloadPattern)\" +\n    \" AND active=1\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "5a04cd169e2802db"
+            ]
+        ]
+    },
+    {
+        "id": "8edbcfc2eb5c887d",
+        "type": "debug",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5a04cd169e2802db",
+        "type": "mysql",
+        "z": "3dad57d09a64cb6c",
+        "mydb": "e97d08da0a84567c",
+        "name": "",
+        "x": 520,
+        "y": 140,
+        "wires": [
+            [
+                "47d0ab4c7994f61c"
+            ]
+        ]
+    },
+    {
+        "id": "47d0ab4c7994f61c",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "call webHook",
+        "func": "if(msg.payload.length !== 0)\n{\n\tfor(var i = 0; i < msg.payload.length; i++)\n    {\n        msg.method = msg.payload[i].method;\n        msg.url = msg.payload[i].webHook;\n\n        node.send([msg]);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 140,
+        "wires": [
+            [
+                "3531066987ec0ff3"
+            ]
+        ]
+    },
+    {
+        "id": "3531066987ec0ff3",
+        "type": "http request",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "credentials": {},
+        "x": 850,
+        "y": 140,
+        "wires": [
+            [
+                "8edbcfc2eb5c887d"
+            ]
+        ]
+    },
+    {
+        "id": "3d2f8ae992f0b5cc",
+        "type": "mqtt in",
+        "z": "3dad57d09a64cb6c",
+        "name": "listen everything",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6346b608.d007a8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "8caa9ba87903665b",
+                "e588d378aceb6bdd"
+            ]
+        ]
+    },
+    {
+        "id": "ae0eb647c7ee5fea",
+        "type": "comment",
+        "z": "3dad57d09a64cb6c",
+        "name": "REGLA ENGINE 1",
+        "info": "",
+        "x": 110,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "7b7fb2cab5c5548d",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/enable/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "d640ec7334c54d89"
+            ]
+        ]
+    },
+    {
+        "id": "d640ec7334c54d89",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.action = \"enable\";\nmsg.topic = \"UPDATE ruleEngine\" +\n            \" SET active=1\" + \n            \" WHERE\" +\n            \" id=\" + msg.req.params.id + \";\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 260,
+        "wires": [
+            [
+                "df532740e6a026d3"
+            ]
+        ]
+    },
+    {
+        "id": "df532740e6a026d3",
+        "type": "mysql",
+        "z": "3dad57d09a64cb6c",
+        "mydb": "e97d08da0a84567c",
+        "name": "",
+        "x": 570,
+        "y": 320,
+        "wires": [
+            [
+                "5db11a615593b9d8"
+            ]
+        ]
+    },
+    {
+        "id": "1b74fbbd6c403fd3",
+        "type": "http response",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json",
+            "Server": "in24hrs.book",
+            "Access-Control-Allow-Origin": "*",
+            "X-Powered-By": "ANAND.tamboli"
+        },
+        "x": 910,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "5db11a615593b9d8",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "prepare response",
+        "func": "msg.payload = {\n    \"status\": msg.action + \" success\",\n    \"found\": msg.payload.affectedRows,\n    \"changed\": msg.payload.changedRows\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 740,
+        "y": 320,
+        "wires": [
+            [
+                "1b74fbbd6c403fd3"
+            ]
+        ]
+    },
+    {
+        "id": "b6fe4d5c60b8b525",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/disable/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "79f3a401cec7788e"
+            ]
+        ]
+    },
+    {
+        "id": "79f3a401cec7788e",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.action = \"disable\";\nmsg.topic = \"UPDATE ruleEngine\" +\n            \" SET active=0\" + \n            \" WHERE\" +\n            \" id=\" + msg.req.params.id + \";\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "df532740e6a026d3"
+            ]
+        ]
+    },
+    {
+        "id": "5dad311b5c87641e",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/enableAll",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "c9a4170ca2aff91c"
+            ]
+        ]
+    },
+    {
+        "id": "c9a4170ca2aff91c",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.action = \"enable all\";\nmsg.topic = \"UPDATE ruleEngine\" +\n            \" SET active=1;\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 340,
+        "wires": [
+            [
+                "df532740e6a026d3"
+            ]
+        ]
+    },
+    {
+        "id": "87ebbbbfebf97349",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/disableAll",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "57afaca04e9f1737"
+            ]
+        ]
+    },
+    {
+        "id": "57afaca04e9f1737",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.action = \"disable all\";\nmsg.topic = \"UPDATE ruleEngine\" +\n            \" SET active=0;\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "df532740e6a026d3"
+            ]
+        ]
+    },
+    {
+        "id": "86027889c1e8fa3a",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/add/:rulename",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "1a48bd6286b6c1bf"
+            ]
+        ]
+    },
+    {
+        "id": "1a48bd6286b6c1bf",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "var ruleName = msg.req.params.rulename;\nvar topicPattern = msg.req.body.topicPattern;\nvar payloadPattern = msg.req.body.payloadPattern;\nvar method = msg.req.body.method;\nvar webHook = msg.req.body.webHook;\n\nvar mysql = context.global.mysql;\n\nmsg.topic = \"INSERT INTO ruleEngine (ruleName, topicPAttern, payloadPattern, method, webHook)\" + \n    \" VALUES\" +\n    \" (\" + mysql.escape(ruleName) + \", \" + mysql.escape(topicPattern) + \", \" + \n    mysql.escape(payloadPattern) + \", \" + mysql.escape(method) + \", \" + mysql.escape(webHook) + \");\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 500,
+        "wires": [
+            [
+                "7356d4d37b3e89c5"
+            ]
+        ]
+    },
+    {
+        "id": "7356d4d37b3e89c5",
+        "type": "mysql",
+        "z": "3dad57d09a64cb6c",
+        "mydb": "e97d08da0a84567c",
+        "name": "",
+        "x": 600,
+        "y": 500,
+        "wires": [
+            [
+                "11f0483d44011d2d"
+            ]
+        ]
+    },
+    {
+        "id": "b896c2c9fcdbf2cc",
+        "type": "http response",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json",
+            "Server": "in24hrs.book",
+            "Access-Control-Allow-Origin": "*",
+            "X-Powered-By": "ANAND.tamboli"
+        },
+        "x": 940,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "11f0483d44011d2d",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "prepare response",
+        "func": "if(msg.payload.affectedRows !== 0)\n{\n    msg.payload = {\n        \"status\": \"rule added\",\n        \"ruleName\": msg.req.params.rulename,\n        \"ruleId\": msg.payload.insertId\n    };\n\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 770,
+        "y": 500,
+        "wires": [
+            [
+                "b896c2c9fcdbf2cc"
+            ]
+        ]
+    },
+    {
+        "id": "caa797a66b5bd41e",
+        "type": "http in",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "url": "/rules/delete/:id",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 550,
+        "wires": [
+            [
+                "3322c9046f94d614"
+            ]
+        ]
+    },
+    {
+        "id": "3322c9046f94d614",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.topic = \"DELETE FROM ruleEngine\" +\n            \" WHERE\" +\n            \" id=\" + msg.req.params.id + \";\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 550,
+        "wires": [
+            [
+                "71bc2e4f8af0b177"
+            ]
+        ]
+    },
+    {
+        "id": "71bc2e4f8af0b177",
+        "type": "mysql",
+        "z": "3dad57d09a64cb6c",
+        "mydb": "e97d08da0a84567c",
+        "name": "",
+        "x": 560,
+        "y": 550,
+        "wires": [
+            [
+                "0cc12b3668842bc7"
+            ]
+        ]
+    },
+    {
+        "id": "664fdf877eb245c8",
+        "type": "http response",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json",
+            "Server": "in24hrs.book",
+            "Access-Control-Allow-Origin": "*",
+            "X-Powered-By": "ANAND.tamboli"
+        },
+        "x": 900,
+        "y": 550,
+        "wires": []
+    },
+    {
+        "id": "0cc12b3668842bc7",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "prepare response",
+        "func": "msg.payload = {\n    \"action\": \"delete rule # \" + msg.req.params.id,\n    \"found\": msg.payload.affectedRows,\n    \"deleted\": msg.payload.affectedRows,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 730,
+        "y": 550,
+        "wires": [
+            [
+                "664fdf877eb245c8"
+            ]
+        ]
+    },
+    {
+        "id": "e588d378aceb6bdd",
+        "type": "function",
+        "z": "3dad57d09a64cb6c",
+        "name": "create query",
+        "func": "msg.action = \"enable\";\nmsg.topic = \"UPDATE ruleEngine\" +\n            \" SET active=1\" + \n            \" WHERE\" +\n            \" id=\" + msg.req.params.id + \";\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "9f3f25bb7fdf6e36"
+            ]
+        ]
+    },
+    {
+        "id": "9f3f25bb7fdf6e36",
+        "type": "mysql",
+        "z": "3dad57d09a64cb6c",
+        "mydb": "e97d08da0a84567c",
+        "name": "",
+        "x": 520,
+        "y": 80,
+        "wires": [
+            [
+                "2cd44dfe1c63ea1f"
+            ]
+        ]
+    },
+    {
+        "id": "2cd44dfe1c63ea1f",
+        "type": "debug",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cbc174cd08fe964a",
+        "type": "comment",
+        "z": "3dad57d09a64cb6c",
+        "name": "REGLA ENGINE 2",
+        "info": "",
+        "x": 110,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "b0ed270aed10eee9",
+        "type": "mqtt in",
+        "z": "3dad57d09a64cb6c",
+        "name": "listen everything",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6346b608.d007a8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 160,
+        "y": 690,
+        "wires": [
+            [
+                "8effb429895099ef"
+            ]
+        ]
+    },
+    {
+        "id": "8effb429895099ef",
+        "type": "switch",
+        "z": "3dad57d09a64cb6c",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "exact-match",
+                "vt": "str"
+            },
+            {
+                "t": "regex",
+                "v": "^partial*",
+                "vt": "str",
+                "case": true
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 320,
+        "y": 690,
+        "wires": [
+            [
+                "7f008bf439722f1a"
+            ],
+            [
+                "49360f68333b4829"
+            ],
+            [
+                "a2c1601f68bfc933"
+            ]
+        ]
+    },
+    {
+        "id": "a2c1601f68bfc933",
+        "type": "debug",
+        "z": "3dad57d09a64cb6c",
+        "name": "default",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 460,
+        "y": 730,
+        "wires": []
+    },
+    {
+        "id": "49360f68333b4829",
+        "type": "debug",
+        "z": "3dad57d09a64cb6c",
+        "name": "rule 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 450,
+        "y": 690,
+        "wires": []
+    },
+    {
+        "id": "7f008bf439722f1a",
+        "type": "debug",
+        "z": "3dad57d09a64cb6c",
+        "name": "rule 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 450,
+        "y": 650,
+        "wires": []
+    },
+    {
+        "id": "e97d08da0a84567c",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "iotsecond_mysql_1",
+        "port": "3306",
+        "db": "TimeSeries",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "6346b608.d007a8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "iotsecond_broker_1",
+        "port": "1883",
+        "tls": "",
+        "clientid": "node-red",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": "",
+        "credentials": {}
+    }
+]
