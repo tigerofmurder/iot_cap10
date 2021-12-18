@@ -82,3 +82,8 @@ INSERT INTO `ruleEngine` (`id`, `ruleName`, `active`, `topicPattern`, `payloadPa
 # Rule Engine
 ![Captura realizada el 2021-12-17 18 58 26](https://user-images.githubusercontent.com/20243155/146620787-6c64d3d1-a13f-4e6e-b079-39439bb05498.png)
 
+# Activar y Desactivar una regla especifica
+![Captura realizada el 2021-12-17 19 17 38](https://user-images.githubusercontent.com/20243155/146621765-ee975251-2a55-4879-b8ed-a44f4c5c5895.png)
+
+# Crear nueva regla
+![Captura realizada el 2021-12-17 19 18 56](https://user-images.githubusercontent.com/20243155/146621827-59acd175-4a87-4ace-b572-2ddf0e937540.png)
